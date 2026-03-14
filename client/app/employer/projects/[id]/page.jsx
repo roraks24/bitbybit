@@ -163,7 +163,7 @@ function ProjectDetailContent() {
                   type="number"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
-                  className="input-quantum pl-10 text-sm"
+                  className="input-quantum has-icon text-sm"
                   placeholder="Amount"
                   min="1"
                 />
@@ -177,6 +177,49 @@ function ProjectDetailContent() {
                 Deposit Funds
               </button>
             </GlassCard>
+
+            {/* Selected milestone details */}
+            {selectedMilestone && (
+              <GlassCard>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-mono text-slate-500 tracking-widest uppercase">
+                    Milestone Details
+                  </h3>
+                  <StatusBadge status={selectedMilestone.status} />
+                </div>
+                <h4 className="text-sm font-semibold text-slate-200 mb-2">{selectedMilestone.title}</h4>
+                <p className="text-xs text-slate-400 leading-relaxed mb-3">
+                  {selectedMilestone.description || 'No description provided.'}
+                </p>
+
+                {/* Payment & Deadline */}
+                <div className="flex items-center gap-4 mb-3 text-xs font-mono">
+                  <span className="text-emerald-400 font-semibold">
+                    ${selectedMilestone.paymentAmount?.toLocaleString()}
+                  </span>
+                  {selectedMilestone.deadline && (
+                    <span className="text-slate-500">
+                      Due {new Date(selectedMilestone.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  )}
+                </div>
+
+                {/* Checklist */}
+                {selectedMilestone.checklist?.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-mono text-slate-600 tracking-widest uppercase mb-2">Checklist</p>
+                    <div className="space-y-1.5">
+                      {selectedMilestone.checklist.map((item, i) => (
+                        <div key={i} className={`flex items-center gap-2 text-xs py-1 px-2 rounded-md ${item.completed ? 'text-emerald-400 bg-emerald-500/5' : 'text-slate-500'}`}>
+                          <span>{item.completed ? '✓' : '○'}</span>
+                          <span>{item.item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </GlassCard>
+            )}
 
             {/* Selected milestone submissions */}
             {selectedMilestone && submissions[selectedMilestone._id]?.length > 0 && (

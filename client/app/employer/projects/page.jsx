@@ -79,7 +79,7 @@ function EmployerProjectsContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search projects..."
-              className="input-quantum pl-9 w-48 h-9 text-xs"
+              className="input-quantum has-icon w-48 h-9 text-xs"
             />
           </div>
           <div className="flex items-center gap-1">

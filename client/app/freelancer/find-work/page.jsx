@@ -61,7 +61,7 @@ function FindWorkContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search available projects..."
-              className="input-quantum pl-9 w-64 h-9 text-xs"
+              className="input-quantum has-icon w-64 h-9 text-xs"
             />
           </div>
         </div>
