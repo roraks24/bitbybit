@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void-900: #020408;
+  --void-800: #060d14;
+  --void-700: #0a1628;
+  --void-600: #0f2040;
+  --cyan-primary: #06b6d4;
+  --cyan-bright: #22d3ee;
+  --cyan-dim: #0891b2;
+  --accent-violet: #7c3aed;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-subtle: rgba(6, 182, 212, 0.12);
+  --border-glow: rgba(6, 182, 212, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--void-900);
+  color: var(--text-primary);
+  font-family: 'Syne', system-ui, sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--void-800); }
+::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan-primary); }
+
+/* Quantum grid background */
+.quantum-grid {
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(6, 13, 20, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass-card-hover {
+  transition: all 0.3s ease;
+}
+.glass-card-hover:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.08), inset 0 0 30px rgba(6, 182, 212, 0.02);
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 60px rgba(6, 182, 212, 0.1);
+}
+.glow-text {
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Neon border */
+.neon-border {
+  border: 1px solid var(--cyan-primary);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(6, 182, 212, 0.05);
+}
+
+/* Scan line animation overlay */
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.4), transparent);
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Status badges */
+.badge-active { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20; }
+.badge-pending { @apply bg-amber-500/10 text-amber-400 border border-amber-500/20; }
+.badge-failed { @apply bg-red-500/10 text-red-400 border border-red-500/20; }
+.badge-locked { @apply bg-slate-500/10 text-slate-400 border border-slate-500/20; }
+.badge-paid { @apply bg-cyan-500/10 text-cyan-400 border border-cyan-500/20; }
+
+/* Button styles */
+.btn-primary {
+  @apply bg-cyan-500 hover:bg-cyan-400 text-void-900 font-semibold px-6 py-2.5 rounded-lg 
+         transition-all duration-200 font-mono text-sm tracking-wider;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);
+}
+.btn-ghost {
+  @apply border border-cyan-500/30 hover:border-cyan-500/60 text-cyan-400 
+         px-6 py-2.5 rounded-lg transition-all duration-200 font-mono text-sm tracking-wider;
+}
+
+/* Input styles */
+.input-quantum {
+  @apply bg-void-800 border border-cyan-500/20 focus:border-cyan-500/60 
+         text-slate-200 placeholder-slate-600 rounded-lg px-4 py-3 
+         w-full outline-none transition-all duration-200 font-mono text-sm;
+}
+.input-quantum:focus {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
+}
+
+/* Milestone progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, var(--cyan-primary), var(--accent-violet));
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+/* PFI Score gauge */
+.pfi-gauge {
+  background: conic-gradient(
+    from 180deg,
+    #ef4444 0deg,
+    #f59e0b 72deg,
+    #06b6d4 144deg,
+    #10b981 216deg,
+    #10b981 360deg
+  );
+}

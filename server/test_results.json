@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "label": "FATAL ERROR",
+      "pass": false,
+      "detail": "fetch failed"
+    }
+  ],
+  "passed": 0,
+  "failed": 1,
+  "total": 1
+}
