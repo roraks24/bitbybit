@@ -72,9 +72,12 @@ export default function DashboardLayout({ children }) {
         {/* Logo */}
         <div className="h-16 flex items-center px-4" style={{ borderBottom: '1px solid var(--divider)' }}>
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 border-[1.5px] border-[var(--cyan)] rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', background: 'var(--cyan-dim)', borderRadius: 0 }}>
-            </div>
+            <svg width="28" height="28" viewBox="0 0 40 40" fill="none" className="flex-shrink-0">
+              {/* Outer hexagon */}
+              <path d="M20 2 L36 11 L36 29 L20 38 L4 29 L4 11 Z" stroke="var(--cyan)" strokeWidth="2.5" fill="var(--cyan-dim)" />
+              {/* Inner diamond */}
+              <rect x="14" y="14" width="12" height="12" rx="1.5" transform="rotate(45 20 20)" stroke="var(--cyan)" strokeWidth="2" fill="none" />
+            </svg>
             {(!collapsed || isMobile) && (
               <span className="font-display font-bold text-sm tracking-wider" style={{ color: 'var(--cyan)' }}>
                 TRUSTLAYER

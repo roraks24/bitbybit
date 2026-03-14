@@ -313,26 +313,67 @@ export default function ChatWidget() {
       </AnimatePresence>
 
       {/* Floating Bubble */}
-      <button
-        id="chat-bubble-btn"
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-4 right-4 sm:right-6 z-[100]
-                   w-12 h-12 rounded-2xl flex items-center justify-center glass-card
-                   transition-all duration-300 group"
-        title={open ? 'Close chat' : 'Open AI Assistant'}
-      >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <X className="w-5 h-5" style={{ color: 'var(--cyan)' }} />
-            </motion.div>
-          ) : (
-            <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <MessageCircle className="w-5 h-5 transition-colors" style={{ color: 'var(--cyan)' }} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </button>
+      <AnimatePresence mode="wait">
+        {open ? (
+          <motion.button
+            key="close-fab"
+            id="chat-bubble-btn"
+            onClick={() => setOpen(false)}
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            exit={{ scale: 0, rotate: 180 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="fixed bottom-4 right-4 sm:right-6 z-[100]
+                       w-12 h-12 rounded-full flex items-center justify-center
+                       transition-colors duration-200 cursor-pointer"
+            style={{
+              background: 'linear-gradient(135deg, var(--cyan), #6366f1)',
+              boxShadow: '0 4px 20px rgba(0,200,255,0.3)',
+            }}
+            title="Close chat"
+          >
+            <X className="w-5 h-5 text-white" />
+          </motion.button>
+        ) : (
+          <motion.button
+            key="open-fab"
+            id="chat-bubble-btn"
+            onClick={() => setOpen(true)}
+            initial={{ scale: 0 }}
+            animate={{
+              scale: 1,
+              y: [0, -6, 0],
+            }}
+            exit={{ scale: 0 }}
+            transition={{
+              scale: { type: 'spring', stiffness: 300, damping: 20 },
+              y: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+            }}
+            className="fixed bottom-6 right-4 sm:right-6 z-[100]
+                       flex items-center gap-2.5 px-5 py-3 rounded-full
+                       cursor-pointer group"
+            style={{
+              background: 'linear-gradient(135deg, #00c8ff, #6366f1)',
+              boxShadow: '0 4px 25px rgba(0,200,255,0.4), 0 0 60px rgba(0,200,255,0.15)',
+            }}
+            title="Open AI Assistant"
+          >
+            {/* Pulse ring */}
+            <span className="absolute inset-0 rounded-full animate-ping opacity-20"
+              style={{ background: 'linear-gradient(135deg, #00c8ff, #6366f1)', animationDuration: '3s' }} />
+            {/* Icon */}
+            <span className="relative flex items-center justify-center w-8 h-8 rounded-full"
+              style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <Bot className="w-5 h-5 text-white" />
+            </span>
+            {/* Label */}
+            <span className="relative text-white font-semibold text-sm tracking-wide pr-1"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
+              AI Chat
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -51,20 +51,21 @@ export default function HomePage() {
 
       {/* Nav */}
       <nav className="relative z-10 w-full anim-nav">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 border-[1.5px] border-[var(--cyan)] flex items-center justify-center"
-              style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', background: 'var(--cyan-dim)' }}>
-            </div>
-            <span className="text-[13px] font-bold tracking-[0.15em]" style={{ color: 'var(--cyan)' }}>TRUSTLAYER</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <svg width="22" height="22" viewBox="0 0 40 40" fill="none" className="sm:w-6 sm:h-6">
+              <path d="M20 2 L36 11 L36 29 L20 38 L4 29 L4 11 Z" stroke="var(--cyan)" strokeWidth="2.5" fill="var(--cyan-dim)" />
+              <rect x="14" y="14" width="12" height="12" rx="1.5" transform="rotate(45 20 20)" stroke="var(--cyan)" strokeWidth="2" fill="none" />
+            </svg>
+            <span className="text-[11px] sm:text-[13px] font-bold tracking-[0.12em] sm:tracking-[0.15em]" style={{ color: 'var(--cyan)' }}>TRUSTLAYER</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <Link href="/login"
-              className="text-[11px] tracking-[0.12em] px-4 py-1.5 rounded-full border transition-all duration-200 hover:tracking-[0.18em]"
+              className="text-[10px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.12em] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border transition-all duration-200 hover:tracking-[0.18em]"
               style={{ color: 'var(--nav-link-color)', borderColor: 'var(--nav-link-border)' }}>
               SIGN IN
             </Link>
-            <Link href="/register" className="btn-primary text-[11px] tracking-[0.12em] !py-1.5 !px-4 !rounded-full">
+            <Link href="/register" className="btn-primary text-[10px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.12em] !py-1 sm:!py-1.5 !px-3 sm:!px-4 !rounded-full">
               GET STARTED
             </Link>
           </div>
@@ -72,29 +73,29 @@ export default function HomePage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative z-10 pt-12 pb-16 px-6">
+      <section className="relative z-10 pt-8 sm:pt-12 pb-10 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="font-display font-black leading-[1.1] mb-4 tracking-[0.12em] anim-h1"
-            style={{ fontSize: 'clamp(36px, 7vw, 64px)', color: 'var(--text-main)' }}>
+          <h1 className="font-display font-black leading-[1.1] mb-3 sm:mb-4 tracking-[0.08em] sm:tracking-[0.12em] anim-h1"
+            style={{ fontSize: 'clamp(28px, 7vw, 64px)', color: 'var(--text-main)' }}>
             TRUSTLAYER
           </h1>
 
-          <p className="text-[13px] max-w-[460px] mx-auto leading-[1.8] anim-desc" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-[12px] sm:text-[13px] max-w-[460px] mx-auto leading-[1.7] sm:leading-[1.8] anim-desc px-2 sm:px-0" style={{ color: 'var(--text-muted)' }}>
             An AI-powered intermediary that breaks projects into milestones &bull; holds funds in escrow &bull; evaluates submitted work &bull; releases payments automatically.
           </p>
         </div>
       </section>
 
       {/* Role selection label */}
-      <div className="relative z-10 text-center mb-6">
-        <span className="text-[11px] tracking-[0.28em] font-bold anim-label"
+      <div className="relative z-10 text-center mb-4 sm:mb-6">
+        <span className="text-[9px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] font-bold anim-label"
           style={{ color: 'var(--cyan)', animation: 'label-glow 2.5s ease-in-out infinite' }}>
           — SELECT YOUR ROLE TO CONTINUE —
         </span>
       </div>
 
       {/* Role Cards */}
-      <section className="relative z-10 flex flex-wrap justify-center gap-6 px-6 mb-20">
+      <section className="relative z-10 flex flex-wrap justify-center gap-4 sm:gap-6 px-4 sm:px-6 mb-12 sm:mb-20">
         {[
           {
             title: 'FREELANCER',
@@ -124,7 +125,7 @@ export default function HomePage() {
           },
         ].map((card) => (
           <Link key={card.title} href={card.href} className={card.anim}>
-            <div className="w-[230px] glass-card glass-card-hover rounded-[20px] p-9 pb-7 text-center cursor-pointer relative overflow-hidden group">
+            <div className="w-full sm:w-[230px] glass-card glass-card-hover rounded-[20px] p-6 sm:p-9 pb-5 sm:pb-7 text-center cursor-pointer relative overflow-hidden group">
               {/* Top accent bar on hover */}
               <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: 'linear-gradient(90deg, var(--cyan), #38bdf8)' }} />
@@ -152,11 +153,11 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="relative z-10 py-20 px-6" style={{ borderTop: '1px solid var(--divider)' }}>
+      <section className="relative z-10 py-10 sm:py-20 px-4 sm:px-6" style={{ borderTop: '1px solid var(--divider)' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-[11px] tracking-[0.28em] font-bold mb-3" style={{ color: 'var(--cyan)' }}>PLATFORM CAPABILITIES</p>
-            <h2 className="text-3xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Everything handled autonomously</h2>
+          <div className="text-center mb-8 sm:mb-14">
+            <p className="text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] font-bold mb-2 sm:mb-3" style={{ color: 'var(--cyan)' }}>PLATFORM CAPABILITIES</p>
+            <h2 className="text-xl sm:text-3xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Everything handled autonomously</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {FEATURES.map(({ icon: Icon, title, desc, color }, i) => (
@@ -174,11 +175,11 @@ export default function HomePage() {
       </section>
 
       {/* Workflow */}
-      <section className="relative z-10 py-20 px-6" style={{ borderTop: '1px solid var(--divider)' }}>
+      <section className="relative z-10 py-10 sm:py-20 px-4 sm:px-6" style={{ borderTop: '1px solid var(--divider)' }}>
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-[11px] tracking-[0.28em] font-bold mb-3" style={{ color: 'var(--cyan)' }}>HOW IT WORKS</p>
-            <h2 className="text-3xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Six steps to complete automation</h2>
+          <div className="text-center mb-8 sm:mb-14">
+            <p className="text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em] font-bold mb-2 sm:mb-3" style={{ color: 'var(--cyan)' }}>HOW IT WORKS</p>
+            <h2 className="text-xl sm:text-3xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Six steps to complete automation</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {STEPS.map((step, i) => (
@@ -202,22 +203,22 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="relative z-10 py-20 px-6" style={{ borderTop: '1px solid var(--divider)' }}>
+      <section className="relative z-10 py-10 sm:py-20 px-4 sm:px-6" style={{ borderTop: '1px solid var(--divider)' }}>
         <div className="max-w-2xl mx-auto text-center">
-          <div className="glass-card rounded-2xl p-12 relative overflow-hidden neon-border">
+          <div className="glass-card rounded-2xl p-6 sm:p-12 relative overflow-hidden neon-border">
             <div className="absolute inset-0 opacity-5 pointer-events-none"
               style={{ background: 'radial-gradient(circle at 50% 0%, var(--cyan), transparent 70%)' }} />
-            <h2 className="text-3xl font-display font-bold mb-4 z-10 relative" style={{ color: 'var(--text-main)' }}>
+            <h2 className="text-xl sm:text-3xl font-display font-bold mb-3 sm:mb-4 z-10 relative" style={{ color: 'var(--text-main)' }}>
               Ready to deploy <span style={{ color: 'var(--cyan)' }}>trust</span>?
             </h2>
-            <p className="text-sm mb-8 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
               Join thousands of teams using TrustLayer to eliminate payment disputes and ship faster.
             </p>
-            <div className="flex flex-wrap justify-center gap-3 relative z-10">
-              <Link href="/login?role=employer" className="btn-primary text-sm flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 relative z-10">
+              <Link href="/login?role=employer" className="btn-primary text-xs sm:text-sm flex items-center justify-center gap-2">
                 Login as Employer <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/login?role=freelancer" className="btn-ghost text-sm flex items-center gap-2">
+              <Link href="/login?role=freelancer" className="btn-ghost text-xs sm:text-sm flex items-center justify-center gap-2">
                 Login as Freelancer <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -226,11 +227,13 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 px-6" style={{ borderTop: '1px solid var(--divider)' }}>
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="relative z-10 py-6 sm:py-8 px-4 sm:px-6" style={{ borderTop: '1px solid var(--divider)' }}>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 border border-[var(--cyan)] flex items-center justify-center"
-              style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', background: 'var(--cyan-dim)' }} />
+            <svg width="16" height="16" viewBox="0 0 40 40" fill="none">
+              <path d="M20 2 L36 11 L36 29 L20 38 L4 29 L4 11 Z" stroke="var(--cyan)" strokeWidth="3" fill="var(--cyan-dim)" />
+              <rect x="14" y="14" width="12" height="12" rx="1.5" transform="rotate(45 20 20)" stroke="var(--cyan)" strokeWidth="2.5" fill="none" />
+            </svg>
             <span className="text-xs" style={{ color: 'var(--text-muted)' }}>TRUSTLAYER © 2025</span>
           </div>
           <p className="text-xs text-center sm:text-left" style={{ color: 'var(--text-muted)' }}>Autonomous AI Payment & Project Agent</p>

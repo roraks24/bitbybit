@@ -53,8 +53,10 @@ function LoginForm() {
       <div className="w-full max-w-md relative anim-h1">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-6 h-6 border-[1.5px] border-[var(--cyan)]"
-            style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', background: 'var(--cyan-dim)' }} />
+          <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
+            <path d="M20 2 L36 11 L36 29 L20 38 L4 29 L4 11 Z" stroke="var(--cyan)" strokeWidth="2.5" fill="var(--cyan-dim)" />
+            <rect x="14" y="14" width="12" height="12" rx="1.5" transform="rotate(45 20 20)" stroke="var(--cyan)" strokeWidth="2" fill="none" />
+          </svg>
           <span className="text-[13px] font-bold tracking-[0.15em]" style={{ color: 'var(--cyan)' }}>TRUSTLAYER</span>
         </Link>
 

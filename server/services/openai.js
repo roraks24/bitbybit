@@ -1,7 +1,39 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+/**
+ * Helper: call OpenAI Chat Completions API
+ */
+async function callGPT(prompt, temperature = 0.3) {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-5-mini',
+      messages: [{ role: 'user', content: prompt }],
+      temperature,
+      response_format: { type: 'json_object' },
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`OpenAI API Error: ${response.status} - ${errText}`);
+  }
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+
+  // Clean up potential markdown formatting
+  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
+
+  return JSON.parse(cleanedContent);
+}
 
 /**
  * Analyze project description and generate structured milestones
@@ -13,7 +45,7 @@ Analyze the following project description and break it into 3-5 structured miles
 Project Description: "${description}"
 Total Budget: $${totalBudget}
 
-Return a JSON array of milestones with this exact structure:
+Return a JSON object with this exact structure:
 {
   "milestones": [
     {
@@ -34,32 +66,9 @@ Rules:
 - paymentPercentage must sum to 100
 - Include specific, verifiable checklist items
 - Be realistic about timelines
-- Return ONLY valid JSON, no markdown`;
+- Return ONLY valid JSON`;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.3,
-        responseMimeType: 'application/json',
-      }
-    })
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Gemini API Error: ${response.status} - ${errText}`);
-  }
-
-  const data = await response.json();
-  const content = data.candidates[0].content.parts[0].text;
-  
-  // Clean up potential markdown formatting from Gemini
-  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
-  
-  return JSON.parse(cleanedContent);
+  return callGPT(prompt, 0.3);
 }
 
 /**
@@ -98,30 +107,7 @@ Return JSON:
 
 Return ONLY valid JSON.`;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-      }
-    })
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Gemini API Error: ${response.status} - ${errText}`);
-  }
-
-  const data = await response.json();
-  const content = data.candidates[0].content.parts[0].text;
-
-  // Clean up potential markdown formatting from Gemini
-  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
-  
-  return JSON.parse(cleanedContent);
+  return callGPT(prompt, 0.2);
 }
 
 /**
