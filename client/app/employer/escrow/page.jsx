@@ -62,15 +62,14 @@ function EscrowContent() {
   };
 
   const totalEscrow = projects.reduce((s, p) => s + (p.escrowBalance || 0), 0);
-  const totalFunds = projects.reduce((s, p) => s + (p.totalFunds || 0), 0);
   const activeProjects = projects.filter((p) => p.escrowBalance > 0).length;
 
   return (
     <DashboardLayout>
       <div className="space-y-6 max-w-4xl">
         <div>
-          <h1 className="text-2xl font-display font-bold text-slate-100">Escrow Manager</h1>
-          <p className="text-sm text-slate-500 font-mono mt-0.5">Manage funds locked in autonomous escrow</p>
+          <h1 className="text-2xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Escrow Manager</h1>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Manage funds locked in autonomous escrow</p>
         </div>
 
         {/* Summary */}
@@ -83,14 +82,15 @@ function EscrowContent() {
         {/* How it works */}
         <GlassCard className="p-4">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
-              <Lock className="w-4 h-4 text-cyan-400" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: 'var(--cyan-dim)', border: '1px solid var(--card-border)' }}>
+              <Lock className="w-4 h-4" style={{ color: 'var(--cyan)' }} />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-slate-200 mb-1">Autonomous Escrow Logic</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Funds deposited here are released automatically by the AI agent upon milestone approval. 
-                If a freelancer's submission scores ≥80%, full payment is released. Between 50–79%, partial 
+              <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text-main)' }}>Autonomous Escrow Logic</h3>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                Funds deposited here are released automatically by the AI agent upon milestone approval.
+                If a freelancer's submission scores ≥80%, full payment is released. Between 50–79%, partial
                 payment based on confidence. Below 50%, funds are returned to escrow for revision.
               </p>
             </div>
@@ -104,8 +104,8 @@ function EscrowContent() {
           <div className="space-y-3">
             {projects.length === 0 ? (
               <GlassCard className="text-center py-12">
-                <Wallet className="w-10 h-10 text-slate-700 mx-auto mb-3" />
-                <p className="text-slate-500 font-mono text-sm">No projects yet</p>
+                <Wallet className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--text-muted)', opacity: 0.4 }} />
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No projects yet</p>
               </GlassCard>
             ) : projects.map((project) => {
               const isLoading = actionStates[project._id] === 'loading';
@@ -120,26 +120,26 @@ function EscrowContent() {
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-slate-200 text-sm">{project.title}</h3>
+                        <h3 className="font-semibold text-sm" style={{ color: 'var(--text-main)' }}>{project.title}</h3>
                         <StatusBadge status={project.status} />
                       </div>
-                      <div className="flex items-center gap-4 text-xs font-mono">
-                        <span className="text-slate-500">Budget: <span className="text-slate-300">${project.totalFunds?.toLocaleString()}</span></span>
-                        <span className="text-slate-500">Escrow: <span className="text-cyan-400 font-semibold">${project.escrowBalance?.toLocaleString()}</span></span>
-                        <span className="text-slate-500">{escrowPct}% funded</span>
+                      <div className="flex items-center gap-4 text-xs">
+                        <span style={{ color: 'var(--text-muted)' }}>Budget: <span style={{ color: 'var(--text-main)' }}>${project.totalFunds?.toLocaleString()}</span></span>
+                        <span style={{ color: 'var(--text-muted)' }}>Escrow: <span className="font-semibold" style={{ color: 'var(--cyan)' }}>${project.escrowBalance?.toLocaleString()}</span></span>
+                        <span style={{ color: 'var(--text-muted)' }}>{escrowPct}% funded</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Escrow bar */}
                   <div className="mb-4">
-                    <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div className="w-full rounded-full h-1.5 overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
                       <div
                         className="h-full rounded-full transition-all duration-700"
                         style={{
                           width: `${escrowPct}%`,
-                          background: 'linear-gradient(90deg, #06b6d4, #7c3aed)',
-                          boxShadow: '0 0 8px rgba(6,182,212,0.4)',
+                          background: 'linear-gradient(90deg, var(--cyan), #7c3aed)',
+                          boxShadow: '0 0 8px rgba(14,165,233,0.3)',
                         }}
                       />
                     </div>
@@ -147,11 +147,12 @@ function EscrowContent() {
 
                   {/* Message */}
                   {msg && (
-                    <div className={`flex items-center gap-2 p-2.5 rounded-lg mb-3 text-xs font-mono
-                      ${msg.type === 'error'
-                        ? 'bg-red-500/10 border border-red-500/20 text-red-400'
-                        : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-                      }`}
+                    <div className="flex items-center gap-2 p-2.5 rounded-lg mb-3 text-xs"
+                      style={{
+                        background: msg.type === 'error' ? 'var(--badge-failed-bg)' : 'var(--badge-active-bg)',
+                        border: `1px solid ${msg.type === 'error' ? 'var(--badge-failed-border)' : 'var(--badge-active-border)'}`,
+                        color: msg.type === 'error' ? 'var(--badge-failed-text)' : 'var(--badge-active-text)',
+                      }}
                     >
                       {msg.type === 'error'
                         ? <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
@@ -166,7 +167,7 @@ function EscrowContent() {
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                       <div className="flex items-center gap-2 flex-1">
                         <div className="relative flex-1">
-                          <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-emerald-500" />
+                          <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--badge-active-text)' }} />
                           <input
                             type="number"
                             value={depositForms[project._id] || ''}
@@ -192,7 +193,8 @@ function EscrowContent() {
                         <button
                           onClick={() => handleRefund(project._id)}
                           disabled={isRefundLoading}
-                          className="btn-ghost h-9 px-3 text-xs text-red-400 border-red-500/20 hover:border-red-500/40 flex items-center gap-1.5"
+                          className="btn-ghost h-9 px-3 text-xs flex items-center gap-1.5"
+                          style={{ color: 'var(--badge-failed-text)', borderColor: 'var(--badge-failed-border)' }}
                         >
                           {isRefundLoading
                             ? <Loader2 className="w-3 h-3 animate-spin" />

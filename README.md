@@ -1,211 +1,112 @@
-# TrustLayer — Autonomous AI Payment & Project Agent
+
+# BitByBit — Autonomous AI Payment & Project Agent
 
 > **Programmable Trust for Freelance Work**
 
-A full-stack hackathon project that acts as an **AI intermediary between employers and freelancers**, autonomously managing project milestones, escrow payments, and quality verification using GPT-4o.
+BitByBit is a full-stack platform that acts as an **AI intermediary between employers and freelancers**. It autonomously manages project milestones, holds funds in escrow, and verifies the quality of submitted work using Google's Gemini before releasing payments.
 
 ---
 
-## 🧠 What It Does
+## 🚀 Core Functionalities
 
-| Feature | Description |
-|---|---|
-| **AI Milestone Generation** | Employer submits a project description → GPT-4o breaks it into structured milestones with checklists, deadlines, and payment splits |
-| **Autonomous Escrow** | Funds locked at project start, released programmatically based on AI quality verdict |
-| **AI Quality Assurance** | Every freelancer submission evaluated by GPT-4o — returns COMPLETE / PARTIAL / FAILED + confidence score |
-| **Decision Engine** | ≥80% → full release · 50–79% → partial · <50% → refund to employer |
-| **PFI Score** | 300–850 reputation score for freelancers based on completion rate, on-time delivery, AI quality |
+### 1. AI-Driven Project & Milestone Generation
+- Employers submit a plain-text project description.
+- **Gemini** analyzes the request and autonomously breaks the project down into **structured milestones**.
+- Each milestone contains a checklist, strict deadlines, and an estimated payment distribution.
+
+### 2. Autonomous Escrow System
+- When an employer creates a project and funds it, the funds are locked in a secure **Escrow balance**.
+- Payments are NOT released manually. They are tied purely to the completion and AI verification of each milestone.
+- **Decision Engine Logic:**
+  - AI Confidence Score **≥ 80%** → Full Payment Released.
+  - AI Confidence Score **50% – 79%** → Partial Payment Released.
+  - AI Confidence Score **< 50%** → Submission Rejected, funds either stay in escrow or get refunded based on project rules.
+
+### 3. AI Quality Assurance (Robotic Reviewer)
+- Freelancers submit their work (repo links, deployment links, notes) to a milestone.
+- **Gemini acts as the reviewer:** It evaluates whether the submission satisfies the milestone's predefined checklist within the time limit.
+- It returns an objective status (`COMPLETE`, `PARTIAL`, or `FAILED`), an **AI Score**, and detailed feedback justifying the decision.
+
+### 4. PFI Score (Programmable Freelancer Index)
+- To maintain quality, freelancers are assigned a dynamic reputation score (ranging from 300 to 850).
+- This score works like a credit score and is highly affected by:
+  - **Completion Rate (40%)**: How many milestones the freelancer successfully completes.
+  - **On-Time Delivery (25%)**: Whether submissions meet hard deadlines.
+  - **AI Quality Score (35%)**: The average score given by the AI reviewer to their submissions.
+
+### 5. Interactive Dashboard Chatbot
+- Included directly within the dashboard is a built-in AI chatbot helper.
+- Users can ask questions seamlessly while managing their projects or finding new work.
 
 ---
 
-## 🏗️ Tech Stack
+## 🏗️ Technical Architecture & Stack
+
+The project is structured as a mono-repo with separated Frontend (`client`) and Backend (`server`) folders.
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js 14 (App Router) + Tailwind CSS |
-| Backend | Node.js + Express (ESM) |
-| Database | MongoDB + Mongoose |
-| AI | OpenAI GPT-4o (`gpt-4o`) |
-| Auth | JWT + bcryptjs |
+| **Frontend** | Next.js 14 (App Router), Tailwind CSS, Framer Motion (for animations) |
+| **Backend** | Node.js, Express.js (ES Modules) |
+| **Database** | MongoDB + Mongoose (hosted via MongoDB Atlas or Local) |
+| **AI Integration** | Gemini API (with JSON mode for structured outputs) |
+| **Authentication** | JWT (JSON Web Tokens) with `bcryptjs` for secure password hashing |
 
 ---
 
-## 📁 Project Structure
+## 🛣️ User Journey Workflows
 
-```
-autonomous-agent/
-├── client/                     # Next.js 14 frontend
-│   ├── app/
-│   │   ├── page.jsx            # Landing page
-│   │   ├── login/              # Auth pages
-│   │   ├── register/
-│   │   ├── employer/
-│   │   │   ├── dashboard/      # Employer dashboard
-│   │   │   ├── projects/       # Project list + detail
-│   │   │   │   ├── new/        # AI project creation
-│   │   │   │   └── [id]/       # Project detail
-│   │   │   └── escrow/         # Escrow manager
-│   │   ├── freelancer/
-│   │   │   ├── dashboard/      # Freelancer dashboard + PFI
-│   │   │   ├── projects/       # Assigned projects
-│   │   │   └── earnings/       # PFI score + earnings
-│   │   └── milestone/[id]/     # Milestone detail + submission
-│   ├── components/
-│   │   ├── layout/             # DashboardLayout (sidebar)
-│   │   ├── dashboard/          # MilestoneTimeline, ProjectCard
-│   │   └── ui/                 # GlassCard, StatusBadge, etc.
-│   └── lib/
-│       ├── api.js              # Axios client with JWT
-│       └── auth.jsx            # Auth context + hooks
-│
-└── server/                     # Express backend
-    ├── index.js                # Entry point
-    ├── models/
-    │   ├── User.js             # Users (employer/freelancer)
-    │   ├── Project.js          # Projects + escrow
-    │   ├── Milestone.js        # Milestones + checklist
-    │   └── Submission.js       # Submissions + AI scores
-    ├── routes/
-    │   ├── auth.js             # /api/auth/*
-    │   ├── projects.js         # /api/projects/*
-    │   ├── milestones.js       # /api/milestones/*
-    │   ├── submissions.js      # /api/submissions/*
-    │   ├── escrow.js           # /api/escrow/*
-    │   └── pfi.js              # /api/pfi/*
-    ├── services/
-    │   ├── openai.js           # AI prompts + decision engine
-    │   └── pfi.js              # PFI score calculation
-    └── middleware/
-        └── auth.js             # JWT authentication
-```
+### 👔 The Employer Flow
+1. **Register/Login:** Creates an account as an 'employer'.
+2. **Dashboard:** Views an overview of active projects and total funds in escrow.
+3. **Create Project:** Enters a project budget, deadline, and description. The AI generates the milestones.
+4. **Fund Escrow:** Employer deposits the required budget into the project's escrow.
+5. **Monitoring:** Watches as freelancers pick up the project, submit work, and the AI automatically evaluates and releases funds.
+
+### 💻 The Freelancer Flow
+1. **Register/Login:** Creates an account as a 'freelancer'.
+2. **Find Work:** Browses available / open projects needing assignment.
+3. **Dashboard:** Tracks their **PFI Score**, current earnings, and active milestones.
+4. **Submit Work:** When a milestone is ready, the freelancer submits links and notes. 
+5. **Get Paid:** If the AI reviewer approves the work, the payment is instantly transferred from the employer's escrow to the freelancer's earnings.
 
 ---
 
-## 🚀 Getting Started
+## 🚦 Getting Started (Local Development)
 
 ### Prerequisites
+- Node.js (v18+)
+- MongoDB (Running locally on `mongodb://localhost:27017` or an Atlas URI)
+- Gemini API Key
 
-- Node.js 18+
-- MongoDB (local or MongoDB Atlas)
-- OpenAI API key
-
----
-
-### 1. Clone & Install
-
+### 1. Installation
+Clone the repository and install dependencies for both the client and server.
 ```bash
-# Clone the repo
+# Clone the repository
 git clone <your-repo-url>
-cd autonomous-agent
+cd bitbybit
 
-# Install all dependencies
+# Install dependencies concurrently
 npm run install:all
-# Or manually:
-cd server && npm install
-cd ../client && npm install
 ```
+
+### 3. Running the App
+From the root directory, you can run both servers simultaneously using `concurrently`:
+```bash
+npm run dev
+```
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:5000
 
 ---
 
-### 2. Configure Environment Variables
+## 📡 API Endpoints Overview
 
-**Server** — copy and edit `server/.env.example`:
-```bash
-cp server/.env.example server/.env
-```
-
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/autonomous-agent
-JWT_SECRET=your_super_secret_key_change_this
-OPENAI_API_KEY=sk-your-openai-api-key
-CLIENT_URL=http://localhost:3000
-```
-
-**Client** — copy and edit `client/.env.example`:
-```bash
-cp client/.env.example client/.env.local
-```
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
----
-
-### 3. Start MongoDB
-
-```bash
-# If running locally:
-mongod
-
-# Or use MongoDB Atlas — paste the connection string into MONGODB_URI
-```
-
----
-
-### 4. Run the Development Servers
-
-**Option A — Run both together (from root):**
-```bash
-npm install          # installs concurrently
-npm run dev          # starts both server + client
-```
-
-**Option B — Run separately:**
-```bash
-# Terminal 1 — Backend
-cd server && npm run dev
-# Runs on http://localhost:5000
-
-# Terminal 2 — Frontend
-cd client && npm run dev
-# Runs on http://localhost:3000
-```
-
----
-
-## 🔌 API Reference
-
-### Authentication
-```
-POST /api/auth/register   { name, email, password, role }
-POST /api/auth/login      { email, password }
-GET  /api/auth/me         (requires Bearer token)
-```
-
-### Projects
-```
-POST /api/projects        { title, description, totalFunds } — AI generates milestones
-GET  /api/projects        — List projects for current user
-GET  /api/projects/:id    — Project + milestones
-PATCH /api/projects/:id/assign { freelancerId }
-```
-
-### Milestones
-```
-GET  /api/milestones/:projectId     — All milestones for a project
-GET  /api/milestones/single/:id     — Single milestone
-POST /api/milestones                — Manual creation
-```
-
-### Submissions
-```
-POST /api/submissions     { milestoneId, repoLink, deployLink, notes }
-GET  /api/submissions/:milestoneId
-```
-
-### Escrow
-```
-POST /api/escrow/deposit  { projectId, amount }
-POST /api/escrow/release  { projectId, amount }
-POST /api/escrow/refund   { projectId }
-```
-
-### PFI
-```
-GET /api/pfi/:freelancerId
-```
+- **Auth:** `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`
+- **Projects:** `POST /api/projects` (AI Milestone Gen), `GET /api/projects`, `GET /api/projects/:id`
+- **Milestones:** `GET /api/milestones/:projectId`, `GET /api/milestones/single/:id`
+- **Submissions & Escrow:** `POST /api/submissions`, `POST /api/escrow/release`
+- **Freelancer PFI:** `GET /api/pfi/:freelancerId`
 
 ---
 
@@ -264,7 +165,7 @@ confidenceScore < 0.5   → REFUND          → employer refund
 ## 🏆 Hackathon Highlights
 
 - **End-to-end AI automation** — from project creation to payment release, no human intervention needed
-- **GPT-4o JSON mode** — structured milestone generation with `response_format: json_object`
+- **Gemini JSON mode** — structured milestone generation with `response_mime_type: application/json`
 - **Async AI evaluation** — submissions processed in background, UI polls for updates
 - **PFI score system** — weighted formula (completion 40% + on-time 25% + AI quality 35%) scaled 300–850
 - **Glassmorphism dark UI** — Quantum Noir aesthetic with IBM Plex Mono + Syne fonts
@@ -286,4 +187,4 @@ For deployment: Vercel (frontend) + Railway/Render (backend) + MongoDB Atlas (da
 
 ---
 
-Built with ⚡ for hackathon demo purposes. Replace `OPENAI_API_KEY` with a real key to enable AI features.
+Built with ⚡ for hackathon demo purposes. Replace `GEMINI_API_KEY` with a real key to enable AI features.

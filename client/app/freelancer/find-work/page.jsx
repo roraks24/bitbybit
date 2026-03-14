@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Search, FolderKanban } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import ProjectCard from '@/components/dashboard/ProjectCard';
@@ -18,7 +17,6 @@ function FindWorkContent() {
     const load = async () => {
       try {
         const res = await api.get('/projects');
-        // We only want to show projects that are unassigned and open to work
         const openProjects = res.data.projects.filter(p => p.status === 'pending' && !p.freelancerId);
         setProjects(openProjects);
 
@@ -48,15 +46,15 @@ function FindWorkContent() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-display font-bold text-slate-100">Find Work</h1>
-            <p className="text-sm text-slate-500 font-mono mt-0.5">{projects.length} open projects available</p>
+            <h1 className="text-2xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Find Work</h1>
+            <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>{projects.length} open projects available</p>
           </div>
         </div>
 
         {/* Filters */}
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}

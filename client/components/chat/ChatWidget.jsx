@@ -1,37 +1,29 @@
 'use client';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import api from '@/lib/api';
 
 // ── Markdown-lite renderer ────────────────────────────────────
 function FormattedMessage({ content }) {
-  // Parse simple markdown: **bold**, `code`, bullet points, numbered lists
   const lines = content.split('\n');
 
   return (
     <div className="space-y-1">
       {lines.map((line, i) => {
-        // Empty line → spacer
         if (line.trim() === '') return <div key={i} className="h-1" />;
 
-        // Format inline markdown
-        let formatted = line;
-
-        // Process inline patterns and return React elements
         const parts = [];
-        let remaining = formatted;
+        let remaining = line;
         let keyIdx = 0;
 
         while (remaining.length > 0) {
-          // Find the next special pattern
           const boldMatch = remaining.match(/\*\*(.+?)\*\*/);
           const codeMatch = remaining.match(/`(.+?)`/);
 
-          // Pick the earliest match
           let earliest = null;
           let type = null;
-          
+
           if (boldMatch && (!earliest || boldMatch.index < earliest.index)) {
             earliest = boldMatch;
             type = 'bold';
@@ -46,17 +38,16 @@ function FormattedMessage({ content }) {
             break;
           }
 
-          // Add text before the match
           if (earliest.index > 0) {
             parts.push(<span key={keyIdx++}>{remaining.slice(0, earliest.index)}</span>);
           }
 
-          // Add the formatted element
           if (type === 'bold') {
-            parts.push(<strong key={keyIdx++} className="font-semibold text-slate-100">{earliest[1]}</strong>);
+            parts.push(<strong key={keyIdx++} style={{ color: 'var(--text-main)', fontWeight: 600 }}>{earliest[1]}</strong>);
           } else if (type === 'code') {
             parts.push(
-              <code key={keyIdx++} className="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 text-[11px] font-mono">
+              <code key={keyIdx++} className="px-1.5 py-0.5 rounded text-[11px]"
+                style={{ background: 'var(--cyan-dim)', color: 'var(--cyan)' }}>
                 {earliest[1]}
               </code>
             );
@@ -65,9 +56,8 @@ function FormattedMessage({ content }) {
           remaining = remaining.slice(earliest.index + earliest[0].length);
         }
 
-        // Check if it's a bullet point
         const isBullet = /^\s*[•\-]\s/.test(line);
-        const isNumbered = /^\s*\d+[\.\)]\s/.test(line);
+        const isNumbered = /^\s*\d+[\.\\)]\s/.test(line);
         const isEmoji = /^\s*[🔒🟢📤🤖✅❌💰⚪⏰⏳🔄⚖️📂🎯📋📊🔍ℹ️👤🌐📤💡🟡🔵🔴1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣]/.test(line.trim());
         const isIndented = /^\s{2,}/.test(line);
 
@@ -103,11 +93,14 @@ function QuickReplies({ replies, onSelect, disabled }) {
           transition={{ delay: 0.3 + i * 0.06 }}
           onClick={() => onSelect(text)}
           disabled={disabled}
-          className="px-2.5 py-1 rounded-lg text-[11px] font-mono tracking-wide
-                     border border-cyan-500/20 text-cyan-400/80
-                     hover:border-cyan-500/50 hover:text-cyan-300 hover:bg-cyan-500/10
+          className="px-2.5 py-1 rounded-lg text-[11px] tracking-wide
                      disabled:opacity-30 disabled:cursor-not-allowed
                      transition-all duration-200 cursor-pointer"
+          style={{
+            border: '1px solid var(--card-border)',
+            color: 'var(--cyan)',
+            background: 'transparent',
+          }}
         >
           {text}
         </motion.button>
@@ -126,21 +119,18 @@ export default function ChatWidget() {
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-scroll to bottom on new messages
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, loading, quickReplies]);
 
-  // Focus input when chat opens
   useEffect(() => {
     if (open && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 300);
     }
   }, [open]);
 
-  // Fetch welcome message when chat opens for the first time
   useEffect(() => {
     if (open && !welcomeLoaded && messages.length === 0) {
       setWelcomeLoaded(true);
@@ -150,7 +140,6 @@ export default function ChatWidget() {
           setQuickReplies(data.quickReplies || []);
         })
         .catch(() => {
-          // Fallback welcome
           setMessages([{ role: 'assistant', content: 'Hi! 👋 How can I help you today?' }]);
           setQuickReplies(['My projects', 'Milestones', 'Help']);
         });
@@ -208,30 +197,25 @@ export default function ChatWidget() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="fixed bottom-20 right-4 sm:right-6 z-[100]
                        w-[calc(100vw-2rem)] sm:w-[400px] h-[520px]
-                       flex flex-col rounded-2xl overflow-hidden
-                       border border-cyan-500/20 shadow-2xl"
-            style={{
-              background: 'rgba(6, 13, 20, 0.95)',
-              backdropFilter: 'blur(24px)',
-              boxShadow: '0 0 40px rgba(6, 182, 212, 0.08), 0 25px 50px rgba(0,0,0,0.5)',
-            }}
+                       flex flex-col rounded-2xl overflow-hidden glass-card neon-border"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-cyan-500/15 flex-shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-cyan-400" />
+            <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid var(--divider)' }}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--cyan-dim)', border: '1px solid var(--card-border)' }}>
+                <Bot className="w-4 h-4" style={{ color: 'var(--cyan)' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-200 font-mono tracking-wide">TrustLayer AI</p>
+                <p className="text-sm font-semibold tracking-wide" style={{ color: 'var(--text-main)' }}>TrustLayer AI</p>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <p className="text-[10px] text-emerald-500/80 font-mono tracking-widest uppercase">Online</p>
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--badge-active-text)' }} />
+                  <p className="text-[10px] tracking-widest uppercase" style={{ color: 'var(--badge-active-text)', opacity: 0.8 }}>Online</p>
                 </div>
               </div>
               <button
                 id="chat-close-btn"
                 onClick={() => setOpen(false)}
-                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-white/5 transition-colors"
+                className="p-1.5 rounded-lg transition-colors"
+                style={{ color: 'var(--text-muted)' }}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -243,29 +227,29 @@ export default function ChatWidget() {
                 <div key={i}>
                   <div className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                     {/* Avatar */}
-                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      msg.role === 'user'
-                        ? 'bg-violet-500/15 border border-violet-500/30'
-                        : 'bg-cyan-500/15 border border-cyan-500/30'
-                    }`}>
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{
+                        background: msg.role === 'user' ? 'rgba(124,58,237,0.1)' : 'var(--cyan-dim)',
+                        border: `1px solid ${msg.role === 'user' ? 'rgba(124,58,237,0.25)' : 'var(--card-border)'}`,
+                      }}>
                       {msg.role === 'user'
-                        ? <User className="w-3 h-3 text-violet-400" />
-                        : <Bot className="w-3 h-3 text-cyan-400" />
+                        ? <User className="w-3 h-3" style={{ color: '#7c3aed' }} />
+                        : <Bot className="w-3 h-3" style={{ color: 'var(--cyan)' }} />
                       }
                     </div>
                     {/* Bubble */}
-                    <div className={`max-w-[80%] px-3 py-2 rounded-xl text-[13px] leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-violet-500/15 border border-violet-500/20 text-slate-200'
-                        : 'bg-cyan-500/8 border border-cyan-500/15 text-slate-300'
-                    }`}>
+                    <div className="max-w-[80%] px-3 py-2 rounded-xl text-[13px] leading-relaxed"
+                      style={{
+                        background: msg.role === 'user' ? 'rgba(124,58,237,0.08)' : 'var(--cyan-dim)',
+                        border: `1px solid ${msg.role === 'user' ? 'rgba(124,58,237,0.2)' : 'var(--card-border)'}`,
+                        color: 'var(--text-main)',
+                      }}>
                       {msg.role === 'assistant'
                         ? <FormattedMessage content={msg.content} />
                         : msg.content
                       }
                     </div>
                   </div>
-                  {/* Quick replies after the last assistant message */}
                   {msg.role === 'assistant' && i === messages.length - 1 && !loading && (
                     <QuickReplies
                       replies={quickReplies}
@@ -279,14 +263,15 @@ export default function ChatWidget() {
               {/* Typing indicator */}
               {loading && (
                 <div className="flex gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-3 h-3 text-cyan-400" />
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'var(--cyan-dim)', border: '1px solid var(--card-border)' }}>
+                    <Bot className="w-3 h-3" style={{ color: 'var(--cyan)' }} />
                   </div>
-                  <div className="px-3 py-2 rounded-xl bg-cyan-500/8 border border-cyan-500/15">
+                  <div className="px-3 py-2 rounded-xl" style={{ background: 'var(--cyan-dim)', border: '1px solid var(--card-border)' }}>
                     <div className="flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60 animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--cyan)', opacity: 0.6, animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--cyan)', opacity: 0.6, animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--cyan)', opacity: 0.6, animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -294,8 +279,9 @@ export default function ChatWidget() {
             </div>
 
             {/* Input */}
-            <div className="px-3 py-3 border-t border-cyan-500/15 flex-shrink-0">
-              <div className="flex items-center gap-2 bg-[#0a1628] border border-cyan-500/15 rounded-xl px-3 py-1.5 focus-within:border-cyan-500/40 transition-colors">
+            <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid var(--divider)' }}>
+              <div className="flex items-center gap-2 rounded-xl px-3 py-1.5 transition-colors"
+                style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)' }}>
                 <input
                   ref={inputRef}
                   id="chat-input"
@@ -305,13 +291,15 @@ export default function ChatWidget() {
                   onKeyDown={handleKeyDown}
                   placeholder="Ask anything..."
                   disabled={loading}
-                  className="flex-1 bg-transparent text-sm text-slate-200 placeholder-slate-600 outline-none font-mono py-1.5"
+                  className="flex-1 bg-transparent text-sm outline-none py-1.5"
+                  style={{ color: 'var(--text-main)' }}
                 />
                 <button
                   id="chat-send-btn"
                   onClick={() => sendMessage()}
                   disabled={!input.trim() || loading}
-                  className="p-1.5 rounded-lg text-cyan-500 hover:text-cyan-400 hover:bg-cyan-500/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                  className="p-1.5 rounded-lg disabled:opacity-30 transition-all"
+                  style={{ color: 'var(--cyan)' }}
                 >
                   {loading
                     ? <Loader2 className="w-4 h-4 animate-spin" />
@@ -329,24 +317,18 @@ export default function ChatWidget() {
         id="chat-bubble-btn"
         onClick={() => setOpen(!open)}
         className="fixed bottom-4 right-4 sm:right-6 z-[100]
-                   w-12 h-12 rounded-2xl flex items-center justify-center
-                   border border-cyan-500/30 hover:border-cyan-500/60
+                   w-12 h-12 rounded-2xl flex items-center justify-center glass-card
                    transition-all duration-300 group"
-        style={{
-          background: 'rgba(6, 13, 20, 0.9)',
-          backdropFilter: 'blur(12px)',
-          boxShadow: '0 0 20px rgba(6, 182, 212, 0.2), 0 0 60px rgba(6, 182, 212, 0.06)',
-        }}
         title={open ? 'Close chat' : 'Open AI Assistant'}
       >
         <AnimatePresence mode="wait">
           {open ? (
             <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <X className="w-5 h-5 text-cyan-400" />
+              <X className="w-5 h-5" style={{ color: 'var(--cyan)' }} />
             </motion.div>
           ) : (
             <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <MessageCircle className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
+              <MessageCircle className="w-5 h-5 transition-colors" style={{ color: 'var(--cyan)' }} />
             </motion.div>
           )}
         </AnimatePresence>

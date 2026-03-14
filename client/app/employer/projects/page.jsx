@@ -63,8 +63,8 @@ function EmployerProjectsContent() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-display font-bold text-slate-100">Projects</h1>
-            <p className="text-sm text-slate-500 font-mono mt-0.5">{projects.length} total projects</p>
+            <h1 className="text-2xl font-display font-bold" style={{ color: 'var(--text-main)' }}>Projects</h1>
+            <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>{projects.length} total projects</p>
           </div>
           <Link href="/employer/projects/new" className="btn-primary flex items-center gap-2">
             <Plus className="w-4 h-4" /> New Project
@@ -74,7 +74,7 @@ function EmployerProjectsContent() {
         {/* Filters */}
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -87,8 +87,12 @@ function EmployerProjectsContent() {
               <button
                 key={s}
                 onClick={() => setFilter(s)}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all
-                  ${filter === s ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'text-slate-600 hover:text-slate-400'}`}
+                className="px-3 py-1.5 rounded-lg text-[11px] transition-all"
+                style={{
+                  background: filter === s ? 'var(--cyan-dim)' : 'transparent',
+                  color: filter === s ? 'var(--cyan)' : 'var(--text-muted)',
+                  border: filter === s ? '1px solid var(--card-border)' : '1px solid transparent',
+                }}
               >
                 {s.toUpperCase()}
               </button>
