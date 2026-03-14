@@ -8,10 +8,10 @@ import { MetricCard, GlassCard, EmptyState, Spinner } from '@/components/ui';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import api from '@/lib/api';
 
-function PFIGauge({ score = 600 }) {
-  const pct = ((score - 300) / 550) * 100;
-  const color = score >= 750 ? '#10b981' : score >= 650 ? '#06b6d4' : score >= 550 ? '#f59e0b' : '#ef4444';
-  const label = score >= 750 ? 'Exceptional' : score >= 650 ? 'Professional' : score >= 550 ? 'Reliable' : score >= 450 ? 'Developing' : 'New';
+function PFIGauge({ score = 0 }) {
+  const pct = (score / 850) * 100;
+  const color = score >= 750 ? '#10b981' : score >= 600 ? '#06b6d4' : score >= 400 ? '#f59e0b' : score >= 200 ? '#fb923c' : '#94a3b8';
+  const label = score >= 750 ? 'Exceptional' : score >= 600 ? 'Professional' : score >= 400 ? 'Reliable' : score >= 200 ? 'Developing' : 'New';
 
   return (
     <GlassCard>
@@ -32,7 +32,7 @@ function PFIGauge({ score = 600 }) {
             />
           </div>
           <div className="flex justify-between text-[9px] font-mono text-slate-700 mt-1">
-            <span>300</span><span>550</span><span>700</span><span>850</span>
+            <span>0</span><span>300</span><span>600</span><span>850</span>
           </div>
         </div>
       </div>
@@ -110,11 +110,11 @@ function FreelancerDashboardContent() {
           <MetricCard label="Projects" value={projects.length} sub="Total assigned" icon={FolderKanban} color="cyan" />
           <MetricCard label="Active Tasks" value={activeMilestones} sub="Open milestones" icon={TrendingUp} color="emerald" />
           <MetricCard label="Completed" value={paidMilestones} sub="Paid milestones" icon={Wallet} color="violet" />
-          <MetricCard label="PFI Score" value={user?.pfiScore || 600} sub="Your reputation" icon={Shield} color="amber" />
+          <MetricCard label="PFI Score" value={user?.pfiScore ?? 0} sub="Your reputation" icon={Shield} color="amber" />
         </div>
 
         {/* PFI */}
-        <PFIGauge score={pfiData?.pfiScore || user?.pfiScore || 600} />
+        <PFIGauge score={pfiData?.pfiScore ?? user?.pfiScore ?? 0} />
 
         {/* Quick actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

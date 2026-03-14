@@ -15,7 +15,7 @@ router.get('/:freelancerId', authenticate, async (req, res) => {
     }
 
     const score = await recalculatePFI(user._id);
-    const category = getPFICategory(score || user.pfiScore);
+    const category = getPFICategory(score ?? user.pfiScore);
 
     const submissions = await Submission.find({ freelancerId: user._id, status: 'approved' })
       .select('aiScore submittedAt')
@@ -23,7 +23,7 @@ router.get('/:freelancerId', authenticate, async (req, res) => {
       .limit(10);
 
     res.json({
-      pfiScore: score || user.pfiScore,
+      pfiScore: score ?? user.pfiScore,
       category,
       stats: {
         completedMilestones: user.completedMilestones,

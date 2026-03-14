@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true, minlength: 6 },
   role: { type: String, enum: ['employer', 'freelancer'], required: true },
-  pfiScore: { type: Number, default: 600, min: 300, max: 850 },
+  pfiScore: { type: Number, default: 0, min: 0, max: 850 },
   completedMilestones: { type: Number, default: 0 },
   totalMilestones: { type: Number, default: 0 },
   onTimeDeliveries: { type: Number, default: 0 },

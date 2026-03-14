@@ -7,6 +7,7 @@ import {
   LogOut, ChevronRight, Zap, Bell, User, Shield, Search
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
+import ChatWidget from '@/components/chat/ChatWidget';
 
 const employerNav = [
   { href: '/employer/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -136,11 +137,11 @@ export default function DashboardLayout({ children }) {
                 <Shield className="w-3 h-3 text-cyan-500" />
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold font-mono text-cyan-400">{user?.pfiScore || 600}</span>
+                <span className="text-lg font-bold font-mono text-cyan-400">{user?.pfiScore ?? 0}</span>
                 <div className="flex-1 bg-void-700 rounded-full h-1">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-violet-500"
-                    style={{ width: `${((user?.pfiScore || 600) - 300) / 550 * 100}%` }}
+                    style={{ width: `${((user?.pfiScore ?? 0) / 850) * 100}%` }}
                   />
                 </div>
               </div>
@@ -195,6 +196,7 @@ export default function DashboardLayout({ children }) {
           {children}
         </main>
       </div>
+      <ChatWidget />
     </div>
   );
 }

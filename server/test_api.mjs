@@ -194,7 +194,7 @@ function ok(label, condition, detail) {
     console.log('\n═══ PFI SCORE ═══');
     if (flUser) {
       const pfi = await req('GET', `/pfi/${flUser._id}`, null, flToken);
-      ok('Fetch PFI score', pfi.status === 200 && pfi.data.pfiScore, `status=${pfi.status}`);
+      ok('Fetch PFI score', pfi.status === 200 && pfi.data.pfiScore != null, `status=${pfi.status}`);
       if (pfi.data) {
         console.log(`   📊 PFI Score: ${pfi.data.pfiScore} (${pfi.data.category?.label})`);
         console.log(`   📈 Stats: completed=${pfi.data.stats?.completedMilestones}, rate=${pfi.data.stats?.completionRate}%, onTime=${pfi.data.stats?.onTimeRate}%`);

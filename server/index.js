@@ -9,6 +9,7 @@ import milestoneRoutes from './routes/milestones.js';
 import submissionRoutes from './routes/submissions.js';
 import escrowRoutes from './routes/escrow.js';
 import pfiRoutes from './routes/pfi.js';
+import chatRoutes from './routes/chat.js';
 import { startDeadlineEnforcer } from './services/deadlineEnforcer.js';
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use('/api/milestones', milestoneRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/escrow', escrowRoutes);
 app.use('/api/pfi', pfiRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

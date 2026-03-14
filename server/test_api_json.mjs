@@ -176,7 +176,7 @@ function save() {
     if (flUser) {
       const pfi = await req('GET', `/pfi/${flUser._id}`, null, flToken);
       test('Fetch PFI (200 + score)', pfi.status === 200 && pfi.data.pfiScore != null, `status=${pfi.status}`);
-      test('PFI score in range 300-850', pfi.data.pfiScore >= 300 && pfi.data.pfiScore <= 850, `score=${pfi.data.pfiScore}`);
+      test('PFI score in range 0-850', pfi.data.pfiScore >= 0 && pfi.data.pfiScore <= 850, `score=${pfi.data.pfiScore}`);
       test('PFI category has label', !!pfi.data.category?.label, `label=${pfi.data.category?.label}`);
       test('PFI stats present', pfi.data.stats != null, `stats=${JSON.stringify(pfi.data.stats)}`);
       test('PFI recentSubmissions array', Array.isArray(pfi.data.recentSubmissions), `type=${typeof pfi.data.recentSubmissions}`);

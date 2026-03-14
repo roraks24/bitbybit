@@ -26,20 +26,21 @@ function EarningsContent() {
     load();
   }, [user?._id]);
 
-  const score = pfiData?.pfiScore || user?.pfiScore || 600;
+  const score = pfiData?.pfiScore ?? user?.pfiScore ?? 0;
   const stats = pfiData?.stats || {};
 
   // Score color based on range
   const scoreColor =
     score >= 750 ? 'text-emerald-400' :
-    score >= 650 ? 'text-cyan-400' :
-    score >= 550 ? 'text-amber-400' : 'text-red-400';
+    score >= 600 ? 'text-cyan-400' :
+    score >= 400 ? 'text-amber-400' :
+    score >= 200 ? 'text-orange-400' : 'text-slate-400';
 
   const scoreLabel =
     score >= 750 ? 'Exceptional' :
-    score >= 650 ? 'Professional' :
-    score >= 550 ? 'Reliable' :
-    score >= 450 ? 'Developing' : 'New';
+    score >= 600 ? 'Professional' :
+    score >= 400 ? 'Reliable' :
+    score >= 200 ? 'Developing' : 'New';
 
   return (
     <DashboardLayout>
@@ -67,7 +68,7 @@ function EarningsContent() {
                     <span className={`text-7xl font-display font-black ${scoreColor}`}>{score}</span>
                     <div className="pb-2">
                       <span className={`text-sm font-semibold ${scoreColor}`}>{scoreLabel}</span>
-                      <p className="text-[10px] font-mono text-slate-600">300 – 850 scale</p>
+                      <p className="text-[10px] font-mono text-slate-600">0 – 850 scale</p>
                     </div>
                   </div>
 
@@ -77,15 +78,15 @@ function EarningsContent() {
                       <div
                         className="h-full rounded-full transition-all duration-1000"
                         style={{
-                          width: `${((score - 300) / 550) * 100}%`,
-                          background: 'linear-gradient(90deg, #ef4444 0%, #f59e0b 35%, #06b6d4 65%, #10b981 100%)',
+                          width: `${(score / 850) * 100}%`,
+                          background: 'linear-gradient(90deg, #94a3b8 0%, #f59e0b 35%, #06b6d4 65%, #10b981 100%)',
                         }}
                       />
                     </div>
                     <div className="flex justify-between text-[9px] font-mono text-slate-700 mt-1 px-0.5">
-                      <span>300 — Poor</span>
-                      <span>550 — Fair</span>
-                      <span>700 — Good</span>
+                      <span>0 — New</span>
+                      <span>400 — Fair</span>
+                      <span>600 — Good</span>
                       <span>850 — Elite</span>
                     </div>
                   </div>
@@ -187,10 +188,10 @@ function EarningsContent() {
               <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                 {[
                   { range: '750–850', label: 'Exceptional', color: 'emerald', desc: 'Top 5% of freelancers' },
-                  { range: '650–749', label: 'Professional', color: 'cyan', desc: 'Consistent performer' },
-                  { range: '550–649', label: 'Reliable', color: 'blue', desc: 'Solid track record' },
-                  { range: '450–549', label: 'Developing', color: 'amber', desc: 'Building reputation' },
-                  { range: '300–449', label: 'New', color: 'slate', desc: 'Getting started' },
+                  { range: '600–749', label: 'Professional', color: 'cyan', desc: 'Consistent performer' },
+                  { range: '400–599', label: 'Reliable', color: 'blue', desc: 'Solid track record' },
+                  { range: '200–399', label: 'Developing', color: 'amber', desc: 'Building reputation' },
+                  { range: '0–199', label: 'New', color: 'slate', desc: 'Getting started' },
                 ].map(({ range, label, color, desc }) => (
                   <div key={range} className={`p-3 rounded-lg border border-${color}-500/15 bg-${color}-500/5 text-center`}>
                     <p className={`text-xs font-bold font-mono text-${color}-400`}>{range}</p>
