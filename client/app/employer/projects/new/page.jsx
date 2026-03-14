@@ -44,23 +44,24 @@ function NewProjectContent() {
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-display font-bold text-slate-100">New Project</h1>
-          <p className="text-sm text-slate-500 font-mono mt-1">AI will automatically generate milestones</p>
+          <h1 className="text-2xl font-display font-bold" style={{ color: 'var(--text-main)' }}>New Project</h1>
+          <p className="text-sm font-mono mt-1" style={{ color: 'var(--text-muted)' }}>AI will automatically generate milestones</p>
         </div>
 
         {/* Stage indicator */}
         <div className="flex items-center gap-2 flex-wrap">
           {STAGES.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
-              <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono transition-all
-                ${i < stage ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : ''}
-                ${i === stage ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : ''}
-                ${i > stage ? 'bg-slate-800 text-slate-600 border border-slate-700' : ''}
-              `}>
+              <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono transition-all border`}
+                style={{
+                  background: i < stage ? 'rgba(16,185,129,0.1)' : i === stage ? 'var(--cyan-dim)' : 'var(--bg-secondary)',
+                  color: i < stage ? '#10b981' : i === stage ? 'var(--cyan)' : 'var(--text-muted)',
+                  borderColor: i < stage ? 'rgba(16,185,129,0.2)' : i === stage ? 'var(--card-border)' : 'var(--divider)',
+                }}>
                 {i < stage ? <Check className="w-3 h-3" /> : <span>{i + 1}</span>}
                 {s}
               </div>
-              {i < STAGES.length - 1 && <ChevronRight className="w-3 h-3 text-slate-700" />}
+              {i < STAGES.length - 1 && <ChevronRight className="w-3 h-3" style={{ color: 'var(--text-muted)', opacity: 0.4 }} />}
             </div>
           ))}
         </div>
@@ -77,7 +78,7 @@ function NewProjectContent() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-widest uppercase">
+                <label className="block text-xs font-mono mb-1.5 tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
                   Project Title
                 </label>
                 <input
@@ -91,10 +92,10 @@ function NewProjectContent() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-widest uppercase">
+                <label className="block text-xs font-mono mb-1.5 tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
                   Project Description
                 </label>
-                <p className="text-[11px] text-slate-600 font-mono mb-2">
+                <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
                   Be detailed — the AI uses this to generate accurate milestones
                 </p>
                 <textarea
@@ -105,11 +106,11 @@ function NewProjectContent() {
                   required
                   minLength={50}
                 />
-                <p className="text-[10px] font-mono text-slate-700 mt-1">{form.description.length} characters</p>
+                <p className="text-[10px] font-mono mt-1" style={{ color: 'var(--text-muted)' }}>{form.description.length} characters</p>
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-widest uppercase">
+                <label className="block text-xs font-mono mb-1.5 tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
                   Total Budget (USD)
                 </label>
                 <div className="relative">
@@ -124,13 +125,13 @@ function NewProjectContent() {
                     required
                   />
                 </div>
-                <p className="text-[11px] font-mono text-slate-600 mt-1">
+                <p className="text-[11px] font-mono mt-1" style={{ color: 'var(--text-muted)' }}>
                   AI will distribute this budget across milestones automatically
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-500 mb-1.5 tracking-widest uppercase">
+                <label className="block text-xs font-mono mb-1.5 tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
                   Project Deadline
                 </label>
                 <div className="relative">
@@ -150,17 +151,17 @@ function NewProjectContent() {
                     max="9999-12-31T23:59"
                   />
                 </div>
-                <p className="text-[11px] font-mono text-slate-600 mt-1">
+                <p className="text-[11px] font-mono mt-1" style={{ color: 'var(--text-muted)' }}>
                   If no freelancer picks this up before the deadline, it will be auto-removed
                 </p>
               </div>
 
               {/* AI info */}
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/15">
-                <Bot className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'var(--cyan-dim)', borderColor: 'var(--cyan-border)' }}>
+                <Bot className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--cyan)' }} />
                 <div>
-                  <p className="text-xs font-semibold text-cyan-400 mb-1">AI Milestone Generation</p>
-                  <p className="text-xs text-slate-500 leading-relaxed">
+                  <p className="text-xs font-semibold mb-1" style={{ color: 'var(--cyan)' }}>AI Milestone Generation</p>
+                   <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                     GPT-4o will analyze your description and create 3–5 structured milestones with 
                     checklists, deadlines, and payment splits. Review and edit before launching.
                   </p>
@@ -180,8 +181,8 @@ function NewProjectContent() {
             <div className="inline-flex w-16 h-16 rounded-full bg-cyan-500/10 border border-cyan-500/30 items-center justify-center mb-6 mx-auto">
               <Bot className="w-8 h-8 text-cyan-400 animate-pulse" />
             </div>
-            <h2 className="text-xl font-display font-bold text-slate-200 mb-2">AI Agent Running</h2>
-            <p className="text-sm text-slate-500 font-mono mb-8">Analyzing project requirements...</p>
+            <h2 className="text-xl font-display font-bold mb-2" style={{ color: 'var(--text-main)' }}>AI Agent Running</h2>
+            <p className="text-sm font-mono mb-8" style={{ color: 'var(--text-muted)' }}>Analyzing project requirements...</p>
             <div className="space-y-2 max-w-xs mx-auto text-left">
               {[
                 'Parsing project requirements',
@@ -190,7 +191,7 @@ function NewProjectContent() {
                 'Allocating payment distribution',
                 'Setting deadline estimates',
               ].map((step, i) => (
-                <div key={step} className="flex items-center gap-2 text-xs font-mono text-slate-500">
+                <div key={step} className="flex items-center gap-2 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
                   <Loader2 className="w-3 h-3 text-cyan-500 animate-spin flex-shrink-0" style={{ animationDelay: `${i * 0.2}s` }} />
                   {step}
                 </div>
@@ -209,7 +210,7 @@ function NewProjectContent() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-emerald-400">Project Created</p>
-                <p className="text-xs font-mono text-slate-500">{result.milestones?.length || 0} milestones generated by AI</p>
+                <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{result.milestones?.length || 0} milestones generated by AI</p>
               </div>
             </div>
 
@@ -218,7 +219,7 @@ function NewProjectContent() {
               <div className="flex items-center gap-3 p-4 rounded-xl bg-amber-500/8 border border-amber-500/20">
                 <CalendarClock className="w-5 h-5 text-amber-400 flex-shrink-0" />
                 <div>
-                  <p className="text-xs font-mono text-slate-500">PROJECT DEADLINE</p>
+                  <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>PROJECT DEADLINE</p>
                   <p className="text-sm font-semibold text-amber-400">
                     {new Date(result.project.deadline).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}
                   </p>
@@ -228,7 +229,7 @@ function NewProjectContent() {
 
             <GlassCard>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-mono text-slate-400 tracking-widest uppercase">Generated Milestones</h2>
+                <h2 className="text-sm font-mono tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>Generated Milestones</h2>
                 <div className="flex items-center gap-1.5">
                   <Bot className="w-3.5 h-3.5 text-cyan-500" />
                   <span className="text-[11px] font-mono text-cyan-500">AI GENERATED</span>
@@ -237,31 +238,31 @@ function NewProjectContent() {
 
               <div className="space-y-3">
                 {result.milestones?.map((m, i) => (
-                  <div key={m._id} className="p-4 rounded-xl border border-cyan-500/10 bg-cyan-500/3">
+                  <div key={m._id} className="p-4 rounded-xl" style={{ border: '1px solid var(--card-border)', background: 'var(--cyan-dim)' }}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-mono text-cyan-500/50">M{i + 1}</span>
-                        <h3 className="text-sm font-semibold text-slate-200">{m.title}</h3>
+                        <h3 className="text-sm font-semibold" style={{ color: 'var(--text-main)' }}>{m.title}</h3>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold font-mono text-emerald-400">${m.paymentAmount?.toLocaleString()}</span>
                         <StatusBadge status={m.status} />
                       </div>
                     </div>
-                    <p className="text-xs text-slate-500 mb-2 leading-relaxed">{m.description}</p>
-                    <div className="flex items-center gap-4 text-[10px] font-mono text-slate-600">
+                    <p className="text-xs mb-2 leading-relaxed" style={{ color: 'var(--text-muted)' }}>{m.description}</p>
+                    <div className="flex items-center gap-4 text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>
                       <span>Due: {new Date(m.deadline).toLocaleDateString()}</span>
                       <span>{m.checklist?.length} checklist items</span>
                     </div>
                     {m.checklist?.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1">
                         {m.checklist.slice(0, 3).map((c, ci) => (
-                          <span key={ci} className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-500 border border-slate-700">
+                          <span key={ci} className="text-[10px] font-mono px-1.5 py-0.5 rounded" style={{ background: 'var(--bg-secondary)', color: 'var(--text-muted)', border: '1px solid var(--divider)' }}>
                             {c.item}
                           </span>
                         ))}
                         {m.checklist.length > 3 && (
-                          <span className="text-[10px] font-mono text-slate-600">+{m.checklist.length - 3} more</span>
+                          <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>+{m.checklist.length - 3} more</span>
                         )}
                       </div>
                     )}

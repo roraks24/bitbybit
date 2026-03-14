@@ -1,39 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-/**
- * Helper: call OpenAI Chat Completions API
- */
-async function callGPT(prompt, temperature = 0.3) {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-5-mini',
-      messages: [{ role: 'user', content: prompt }],
-      temperature,
-      response_format: { type: 'json_object' },
-    }),
-  });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`OpenAI API Error: ${response.status} - ${errText}`);
-  }
-
-  const data = await response.json();
-  const content = data.choices[0].message.content;
-
-  // Clean up potential markdown formatting
-  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
-
-  return JSON.parse(cleanedContent);
-}
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 /**
  * Analyze project description and generate structured milestones
@@ -66,9 +36,37 @@ Rules:
 - paymentPercentage must sum to 100
 - Include specific, verifiable checklist items
 - Be realistic about timelines
-- Return ONLY valid JSON`;
+- Return ONLY valid JSON, no markdown`;
 
-  return callGPT(prompt, 0.3);
+  const response = await fetch(GROQ_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant that responds only in valid JSON.' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.3,
+      response_format: { type: 'json_object' },
+    })
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Groq API Error: ${response.status} - ${errText}`);
+  }
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+
+  // Clean up potential markdown formatting
+  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
+
+  return JSON.parse(cleanedContent);
 }
 
 /**
@@ -107,7 +105,35 @@ Return JSON:
 
 Return ONLY valid JSON.`;
 
-  return callGPT(prompt, 0.2);
+  const response = await fetch(GROQ_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant that responds only in valid JSON.' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.2,
+      response_format: { type: 'json_object' },
+    })
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Groq API Error: ${response.status} - ${errText}`);
+  }
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+
+  // Clean up potential markdown formatting
+  const cleanedContent = content.replace(/```json\n?|\n?```/g, '').trim();
+
+  return JSON.parse(cleanedContent);
 }
 
 /**
