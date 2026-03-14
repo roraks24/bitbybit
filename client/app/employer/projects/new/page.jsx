@@ -118,7 +118,7 @@ function NewProjectContent() {
                     type="number"
                     value={form.totalFunds}
                     onChange={(e) => setForm({ ...form, totalFunds: e.target.value })}
-                    className="input-quantum pl-10"
+                    className="input-quantum has-icon"
                     placeholder="5000"
                     min="100"
                     required
@@ -138,10 +138,16 @@ function NewProjectContent() {
                   <input
                     type="datetime-local"
                     value={form.deadline}
-                    onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-                    className="input-quantum pl-10"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const yearPart = val.split('-')[0];
+                      if (yearPart && yearPart.length > 4) return;
+                      setForm({ ...form, deadline: val });
+                    }}
+                    className="input-quantum has-icon"
                     required
                     min={new Date().toISOString().slice(0, 16)}
+                    max="9999-12-31T23:59"
                   />
                 </div>
                 <p className="text-[11px] font-mono text-slate-600 mt-1">

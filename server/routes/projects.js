@@ -29,6 +29,17 @@ router.post('/', authenticate, requireRole('employer'), async (req, res) => {
       const analysis = await analyzeProjectRequirements(description, totalFunds);
       const today = new Date();
 
+      // Calculate payment amounts ensuring they never exceed totalFunds
+      const milestonePayments = analysis.milestones.map((m) =>
+        Math.floor((m.paymentPercentage / 100) * totalFunds)
+      );
+      // Assign any remaining amount to the last milestone so total = totalFunds
+      const paymentSum = milestonePayments.reduce((a, b) => a + b, 0);
+      const remainder = totalFunds - paymentSum;
+      if (remainder > 0 && milestonePayments.length > 0) {
+        milestonePayments[milestonePayments.length - 1] += remainder;
+      }
+
       milestones = await Promise.all(
         analysis.milestones.map(async (m, index) => {
           const deadline = new Date(today);
@@ -39,7 +50,7 @@ router.post('/', authenticate, requireRole('employer'), async (req, res) => {
             title: m.title,
             description: m.description,
             checklist: m.checklist.map((item) => ({ item, completed: false })),
-            paymentAmount: Math.round((m.paymentPercentage / 100) * totalFunds),
+            paymentAmount: milestonePayments[index],
             deadline,
             order: m.order || index + 1,
             status: index === 0 ? 'active' : 'locked',

@@ -23,7 +23,19 @@ function RegisterForm() {
       const user = await register(form.name, form.email, form.password, form.role);
       router.push(user.role === 'employer' ? '/employer/dashboard' : '/freelancer/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed.');
+      const status = err.response?.status;
+      const serverMsg = err.response?.data?.error;
+      if (serverMsg) {
+        setError(serverMsg);
+      } else if (status === 409) {
+        setError('An account with this email already exists. Please login instead.');
+      } else if (status === 400) {
+        setError('Please fill in all required fields correctly.');
+      } else if (!err.response) {
+        setError('Unable to connect to server. Please check if the server is running.');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -91,7 +103,7 @@ function RegisterForm() {
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="input-quantum pl-10"
+                  className="input-quantum has-icon"
                   placeholder="Alex Chen"
                   required
                 />
@@ -106,7 +118,7 @@ function RegisterForm() {
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="input-quantum pl-10"
+                  className="input-quantum has-icon"
                   placeholder="you@company.com"
                   required
                 />
@@ -121,7 +133,7 @@ function RegisterForm() {
                   type="password"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="input-quantum pl-10"
+                  className="input-quantum has-icon"
                   placeholder="Min 6 characters"
                   minLength={6}
                   required

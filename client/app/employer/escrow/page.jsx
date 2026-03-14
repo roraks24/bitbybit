@@ -76,7 +76,7 @@ function EscrowContent() {
         {/* Summary */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <MetricCard label="Total Escrow" value={`$${totalEscrow.toLocaleString()}`} sub="Locked in escrow" icon={Lock} color="cyan" />
-          <MetricCard label="Total Committed" value={`$${totalFunds.toLocaleString()}`} sub="Across all projects" icon={Wallet} color="emerald" />
+          <MetricCard label="Total Committed" value={`$0`} sub="Across all projects" icon={Wallet} color="emerald" />
           <MetricCard label="Active Escrows" value={activeProjects} sub="Projects with funds" icon={DollarSign} color="violet" />
         </div>
 
@@ -171,7 +171,7 @@ function EscrowContent() {
                             type="number"
                             value={depositForms[project._id] || ''}
                             onChange={(e) => setDepositForms((p) => ({ ...p, [project._id]: e.target.value }))}
-                            className="input-quantum pl-8 h-9 text-xs"
+                            className="input-quantum has-icon h-9 text-xs"
                             placeholder="Amount to deposit"
                             min="1"
                           />

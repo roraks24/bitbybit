@@ -196,7 +196,7 @@ function MilestoneContent() {
                         type="url"
                         value={form.repoLink}
                         onChange={(e) => setForm({ ...form, repoLink: e.target.value })}
-                        className="input-quantum pl-10"
+                        className="input-quantum has-icon"
                         placeholder="https://github.com/username/repo"
                       />
                     </div>
@@ -212,7 +212,7 @@ function MilestoneContent() {
                         type="url"
                         value={form.deployLink}
                         onChange={(e) => setForm({ ...form, deployLink: e.target.value })}
-                        className="input-quantum pl-10"
+                        className="input-quantum has-icon"
                         placeholder="https://your-demo.vercel.app"
                       />
                     </div>
@@ -227,7 +227,7 @@ function MilestoneContent() {
                       <textarea
                         value={form.notes}
                         onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                        className="input-quantum pl-10 min-h-[100px] resize-none"
+                        className="input-quantum has-icon min-h-[100px] resize-none"
                         placeholder="Describe what you built, any known limitations, testing instructions..."
                       />
                     </div>

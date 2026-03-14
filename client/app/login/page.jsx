@@ -21,9 +21,19 @@ function LoginForm() {
       const user = await login(form.email, form.password);
       router.push(user.role === 'employer' ? '/employer/dashboard' : '/freelancer/dashboard');
     } catch (err) {
-      console.error('Login Error Details:', err);
-      console.error('Login Error Response:', err.response);
-      setError(err.response?.data?.error || err.message || 'Login failed. Please try again.');
+      const status = err.response?.status;
+      const serverMsg = err.response?.data?.error;
+      if (serverMsg) {
+        setError(serverMsg);
+      } else if (status === 401) {
+        setError('Invalid credentials. Please check your email and password.');
+      } else if (status === 404) {
+        setError('No account found with this email. Please register first.');
+      } else if (!err.response) {
+        setError('Unable to connect to server. Please check if the server is running.');
+      } else {
+        setError('Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -69,7 +79,7 @@ function LoginForm() {
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="input-quantum pl-10"
+                  className="input-quantum has-icon"
                   placeholder="you@company.com"
                   required
                 />
@@ -84,7 +94,7 @@ function LoginForm() {
                   type="password"
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="input-quantum pl-10"
+                  className="input-quantum has-icon"
                   placeholder="••••••••"
                   required
                 />
